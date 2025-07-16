@@ -26,4 +26,4 @@ RUN chown -R www-data:www-data /var/www \
 
 # ----- 8️⃣ Expose + start Laravel on port 8080 --------------------------------
 EXPOSE 8080
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
+CMD tail -f storage/logs/laravel.log
