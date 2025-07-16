@@ -14,12 +14,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # ----- 4️⃣ Set workdir --------------------------------------------------------
 WORKDIR /var/www
 
-# ----- 5️⃣ Copy composer files & install deps --------------------------------
-COPY composer.json composer.lock ./
-RUN composer install --no-dev --optimize-autoloader --no-interaction
-
-# ----- 6️⃣ Copy the rest of the app ------------------------------------------
+# ----- 5️⃣ Copy the whole app first ------------------------------------------
 COPY . .
+
+# ----- 6️⃣ Install dependencies ----------------------------------------------
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # ----- 7️⃣ Set file permissions (storage, cache, logs) ------------------------
 RUN chown -R www-data:www-data /var/www \
