@@ -18,7 +18,7 @@ WORKDIR /var/www
 COPY . .
 
 # ----- 6️⃣ Install dependencies ----------------------------------------------
-RUN composer install --no-dev --optimize-autoloader --no-interactiongit add Dockerfile
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # ----- 7️⃣ Set file permissions (storage, cache, logs) ------------------------
 RUN chown -R www-data:www-data /var/www \
