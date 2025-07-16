@@ -14,16 +14,18 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # ----- 4️⃣ Set workdir --------------------------------------------------------
 WORKDIR /var/www
 
-# ----- 5️⃣ Copy the whole app first ------------------------------------------
+# ----- 5️⃣ Copy full Laravel app ----------------------------------------------
 COPY . .
 
-# ----- 6️⃣ Install dependencies ----------------------------------------------
+# ----- 6️⃣ Install Laravel dependencies ---------------------------------------
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# ----- 7️⃣ Set file permissions (storage, cache, logs) ------------------------
+# ----- 7️⃣ Set file permissions for logs/cache/storage ------------------------
 RUN chown -R www-data:www-data /var/www \
- && chmod -R 755 storage bootstrap/cache
+ && chmod -R 775 storage bootstrap/cache
 
-# ----- 8️⃣ Expose + start Laravel on port 8080 --------------------------------
+# ----- 8️⃣ Expose port 8080 for Laravel ---------------------------------------
 EXPOSE 8080
-CMD tail -f storage/logs/laravel.log
+
+# ----- 9️⃣ Start Laravel and auto-run migrations (for debugging/logging) ------
+CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8080
